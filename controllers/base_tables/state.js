@@ -5,7 +5,14 @@ const messages = require("../../lang/messages.json");
 module.exports = {
   index: async(req,res) => {
     try {
-      const states = await stateModel.find({ country: req.body['country_id']});
+      const states = await stateModel.find();
+      states.forEach(state => {
+        state.populate({
+            path: 'country',
+            select: ['name'],
+        })
+      });
+      console.log(states)
       returnMessage.successMessage(res,messages.successMessages.getAllStates,states);
     } catch (error) {
       returnMessage.errorMessage(res,error);
@@ -42,7 +49,7 @@ module.exports = {
   },
   update: async(req,res) => {
     try {
-      const state = await stateModel.findByIdAndUpdate(req.params['id'], { ...req.body }, {new: true});
+      const state = await stateModel.findByIdAndUpdate(req.params['id'], { country: req.body.country_id, name: req.body.name }, {new: true});
       await state.populate({
         path: 'country',
         select: ['name'],
