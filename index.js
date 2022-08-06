@@ -1,5 +1,8 @@
 const express = require("express");
 const authRoute = require("./routes/auth");
+const countryRoute = require("./routes/base_tables/country");
+const stateRoute = require("./routes/base_tables/state");
+const districtRoute = require("./routes/base_tables/district");
 require("dotenv").config();
 
 const dbConnection = require("./utils/DBconnection");
@@ -12,6 +15,9 @@ app.use(require("cors")());
 const routePrefix = "api";
 
 app.use(`/${routePrefix}`, authRoute);
+app.use(`/${routePrefix}/country`, countryRoute);
+app.use(`/${routePrefix}/state`, stateRoute);
+app.use(`/${routePrefix}/district`, districtRoute);
 
 app.listen(4000, async () => {
   try {
