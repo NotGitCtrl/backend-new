@@ -1,6 +1,6 @@
-const fundingAgencyModel = require("../../schema/fundingAgency");
-const returnMessage = require("../message");
-const messages = require("../../lang/messages.json");
+const fundingAgencyModel = require("../schema/fundingAgency");
+const returnMessage = require("./message");
+const messages = require("../lang/messages.json");
 
 module.exports = {
   index: async(req,res) => {
