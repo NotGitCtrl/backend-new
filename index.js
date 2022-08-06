@@ -19,6 +19,10 @@ app.use(`/${routePrefix}/country`, countryRoute);
 app.use(`/${routePrefix}/state`, stateRoute);
 app.use(`/${routePrefix}/district`, districtRoute);
 
+//role route
+const roleRouter = require("./routes/role");
+app.use(`/${routePrefix}/roles`, roleRouter);
+
 app.listen(4000, async () => {
   try {
     await dbConnection(process.env.MONGO_URI);
