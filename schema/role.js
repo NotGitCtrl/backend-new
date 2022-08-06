@@ -8,7 +8,7 @@ const Role = new mongoose.Schema({
   description: {
     type: String,
   },
-  permissions: [String],
+  permissions: Array,
 });
 
 module.exports = mongoose.model("role", Role);
