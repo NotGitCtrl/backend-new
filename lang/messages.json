@@ -16,11 +16,17 @@
         "deleteDistrict": "District deleted successfully",
         "updateDistrict": "Updation Successfull",
         "addRole":"Role added successfully",
-        "addRoutePermission" : "Route Permission Added Succesfully"
+        "addRoutePermission" : "Route Permission Added Succesfully",
+        "getAllHei":"Hei data retrieved successfully",
+        "addHei":"Hei added successfully",
+        "showHei":"Hei found!!",
+        "deleteHei": "Hei deleted successfully",
+        "updateHei": "Updation Successfull"
     },
 
     "errorMessages": {
         "countryAlreadyExists": "Enter Country already exists",
+        "alreadyExists": "Already Exists",
         "incorrectState": "Enter State Country detail",
         "incorrectRole":"Error while adding role",
         "addRoutePermission": "Unable to Add Route Permission"

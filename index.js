@@ -7,6 +7,7 @@ const universityRoute = require("./routes/base_tables/university")
 const streamRoute = require("./routes/base_tables/stream");
 const roleRoute = require("./routes/role");
 const fundingAgencyRoute = require("./routes/fundingAgency");
+const heiRoute = require("./routes/hei");
 require("dotenv").config();
 
 const dbConnection = require("./utils/DBconnection");
@@ -26,6 +27,7 @@ app.use(`/${routePrefix}/universities`,universityRoute);
 app.use(`/${routePrefix}/streams`,streamRoute);
 app.use(`/${routePrefix}/roles`, roleRoute);
 app.use(`/${routePrefix}/admin/funding-agency`,fundingAgencyRoute);
+app.use(`/${routePrefix}/admin/hei`,heiRoute);
 
 app.listen(4000, async () => {
   try {

@@ -1,4 +1,4 @@
-const fundingAgency = require("../../controllers/fundingAgency");
+const fundingAgency = require("../controllers/fundingAgency");
 
 const router = require("express").Router();
 
