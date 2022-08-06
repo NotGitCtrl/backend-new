@@ -9,6 +9,10 @@ const UserSchema = new mongoose.Schema({
   dob: Date,
   salt: String,
   gender: String,
+  role: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "role",
+  },
 });
 
 module.exports = mongoose.model("user", UserSchema);
