@@ -1,6 +1,6 @@
 const role = require("../controllers/role");
 const router = require("express").Router();
 
-router.post("/addrole", role.create);
+router.post("/", role.create);
 
 module.exports = router;

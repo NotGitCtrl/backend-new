@@ -15,7 +15,7 @@ app.use(`/${routePrefix}`, authRoute);
 
 //role route
 const roleRouter = require("./routes/role");
-app.use("/roles", roleRouter);
+app.use(`/${routePrefix}/roles`, roleRouter);
 
 app.listen(4000, async () => {
   try {
