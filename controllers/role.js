@@ -1,5 +1,5 @@
-const Role = require("../schema/role.model");
-const returnMessages = require("../controllers/message");
+const Role = require("../schema/role");
+const returnMessages = require("./message");
 const messages = require("../lang/messages.json");
 
 module.exports = {
