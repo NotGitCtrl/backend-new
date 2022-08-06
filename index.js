@@ -13,6 +13,10 @@ const routePrefix = "api";
 
 app.use(`/${routePrefix}`, authRoute);
 
+//role route
+const roleRouter = require("./routes/role");
+app.use("/roles", roleRouter);
+
 app.listen(4000, async () => {
   try {
     await dbConnection(process.env.MONGO_URI);
