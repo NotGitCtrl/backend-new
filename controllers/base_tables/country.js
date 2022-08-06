@@ -18,7 +18,7 @@ module.exports = {
       if (isNameTaken)
         returnMessage.errorMessage(res,messages.errorMessages.countryAlreadyExists)
 
-      const country = countryModel.create({ ...req.body });
+      const country = await countryModel.create({ ...req.body });
       returnMessage.successMessage(res,messages.successMessages.addCountry,country);
     } catch (error) {
       returnMessage.errorMessage(res,error);
@@ -34,7 +34,7 @@ module.exports = {
   },
   update: async(req,res) => {
     try {
-      const country = await countryModel.findByIdAndUpdate(req.params['id'], { ...req.body });
+      const country = await countryModel.findByIdAndUpdate(req.params['id'], { ...req.body }, {new: true});
       returnMessage.successMessage(res,messages.successMessages.updateCountry, country);
     } catch (error) {
       returnMessage.errorMessage(res,error);

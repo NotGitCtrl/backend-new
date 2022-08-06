@@ -10,6 +10,11 @@
         "showState":"state found!!",
         "deleteState": "state deleted successfully",
         "updateState": "Updation Successfull",
+        "getAllDistrict":"District data retrieved successfully",
+        "addDistrict":"District added successfully",
+        "showDistrict":"District found!!",
+        "deleteDistrict": "District deleted successfully",
+        "updateDistrict": "Updation Successfull",
         "addRole":"Role added successfully",
         "addRoutePermission" : "Route Permission Added Succesfully"
     },
