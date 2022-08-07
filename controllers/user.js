@@ -1,6 +1,8 @@
 const userModel = require("../schema/users");
 const heiModel = require("../schema/hei");
 const fundingAgencyModel = require("../schema/fundingAgency");
+const returnMessages = require("./message");
+const messages = require("../lang/messages.json");
 const { hashPassword, signToken, verifyToken } = require("../utils");
 
 async function redirectUser(user) {
@@ -95,4 +97,13 @@ module.exports = {
       res.status(500).json({ error });
     }
   },
+
+  list: async (req, res) => {
+    try {
+      const users = await userModel.find({ role: req.body.role_id });     
+      returnMessages.successMessage(res,messages.successMessages.getAllheis,users);
+    } catch (error) {
+      returnMessages.errorMessage(res,error);
+    }
+  }
 };
