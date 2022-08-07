@@ -26,9 +26,11 @@ const fundingAgency = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "user",
   },
-  employees: [{
-    type: Schema.Types.ObjectId,
-    ref: "user",
-  }],
+  employees: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
+  ],
 });
 module.exports = mongoose.model("fundingAgency", fundingAgency);
