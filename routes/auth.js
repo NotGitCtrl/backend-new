@@ -1,5 +1,5 @@
 const user = require("../controllers/user");
-const { registrationAuthRules, validateRegistration,loginAuthRules, validateLogin } = require('../validations/UserValidations')
+const { registrationAuthRules, validateRegistration,loginAuthRules, validateLogin } = require('../validations/auth')
 const router = require("express").Router();
 
 router.post("/register", user.register);
