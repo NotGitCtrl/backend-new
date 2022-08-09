@@ -10,7 +10,6 @@ const connectToMongo = async () => {
 connectToMongo();
 
 const userModel = require("../schema/users");
-const { log } = require("console");
 
 const seeders = [
   {
