@@ -100,9 +100,14 @@ module.exports = {
 
   list: async (req, res) => {
     try {
-      const users = await userModel.find({ role: req.body.role_id });     
+      var query = {}
+      if(req.body.role_id)
+        query = {role: req.body.role_id}
+
+      const users = await userModel.find(query);
       returnMessages.successMessage(res,messages.successMessages.getAllheis,users);
     } catch (error) {
+      console.log(error)
       returnMessages.errorMessage(res,error);
     }
   }
