@@ -8,7 +8,7 @@ const Schemes = new mongoose.Schema({
   fundingAgency: {
     type: Schema.Types.ObjectId,
     ref: "fundingAgency",
-  }
+  },
 });
 
-module.exports = mongoose.model("schema", Schemes);
+module.exports = mongoose.model("scheme", Schemes);
