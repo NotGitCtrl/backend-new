@@ -1,19 +1,15 @@
 const returnMessage = require("../message");
 const messages = require("../../lang/messages.json");
-const projectModel = require("../../schema/projects");
-const fundingAgencyModel = require("../../schema/fundingAgency");
-const heiModel = require("../../schema/hei");
-const schemeModel = require("../../schema/schemes");
-const authUser = require("../../utils/authUser");
+const reportModel = require("../../schema/reports");
 
 module.exports = {
   index: async (req, res) => {
     try {
-      const projects = await projectModel.find();
+      const reports = await reportModel.find();
       returnMessage.successMessage(
         res,
         messages.successMessages.getAllStates,
-        projects
+        reports
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -22,26 +18,21 @@ module.exports = {
   create: async (req, res) => {
     try {
       const { name } = req.body;
-      const isNameTaken = await projectModel.findOne({ name });
+      const isNameTaken = await reportModel.findOne({ name });
       if (isNameTaken)
         returnMessage.errorMessage(
           res,
           messages.errorMessages.stateAlreadyExists
         );
 
-      let user = await authUser.getUser(req, res);
-      const fa = await fundingAgencyModel.findOne({ admin: user._id });
-      const hei = await heiModel.findOne({ heiAdmin: user._id });
-      const projects = await projectModel.create({
+      const reports = await reportModel.create({
         ...req.body,
-        fundingAgency: fa._id,
-        hei: hei._id,
       });
 
       returnMessage.successMessage(
         res,
         messages.successMessages.addState,
-        projects
+        reports
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -49,11 +40,11 @@ module.exports = {
   },
   edit: async (req, res) => {
     try {
-      const project = await projectModel.findOne({ _id: req.params["id"] });
+      const report = await reportModel.findOne({ _id: req.params["id"] });
       returnMessage.successMessage(
         res,
         messages.successMessages.showState,
-        project
+        report
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -61,7 +52,7 @@ module.exports = {
   },
   update: async (req, res) => {
     try {
-      const projects = await projectModel.findByIdAndUpdate(
+      const reports = await reportModel.findByIdAndUpdate(
         req.params["id"],
         { ...req.body },
         { new: true }
@@ -69,7 +60,7 @@ module.exports = {
       returnMessage.successMessage(
         res,
         messages.successMessages.updateState,
-        projects
+        reports
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -77,11 +68,11 @@ module.exports = {
   },
   delete: async (req, res) => {
     try {
-      const project = await projectModel.remove({ _id: req.params["id"] });
+      const report = await reportModel.remove({ _id: req.params["id"] });
       returnMessage.successMessage(
         res,
         messages.successMessages.deleteState,
-        project
+        report
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -89,13 +80,13 @@ module.exports = {
   },
   show: async (req, res) => {
     try {
-      const project = await projectModel.findOne({
+      const report = await reportModel.findOne({
         _id: req.params["id"],
       });
       returnMessage.successMessage(
         res,
         messages.successMessages.showState,
-        project
+        report
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);

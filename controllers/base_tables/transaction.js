@@ -1,19 +1,16 @@
 const returnMessage = require("../message");
 const messages = require("../../lang/messages.json");
-const projectModel = require("../../schema/projects");
-const fundingAgencyModel = require("../../schema/fundingAgency");
-const heiModel = require("../../schema/hei");
-const schemeModel = require("../../schema/schemes");
+const transactionModel = require("../../schema/transactions");
 const authUser = require("../../utils/authUser");
 
 module.exports = {
   index: async (req, res) => {
     try {
-      const projects = await projectModel.find();
+      const transactions = await transactionModel.find();
       returnMessage.successMessage(
         res,
         messages.successMessages.getAllStates,
-        projects
+        transactions
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -22,7 +19,7 @@ module.exports = {
   create: async (req, res) => {
     try {
       const { name } = req.body;
-      const isNameTaken = await projectModel.findOne({ name });
+      const isNameTaken = await transactionModel.findOne({ name });
       if (isNameTaken)
         returnMessage.errorMessage(
           res,
@@ -30,18 +27,16 @@ module.exports = {
         );
 
       let user = await authUser.getUser(req, res);
-      const fa = await fundingAgencyModel.findOne({ admin: user._id });
-      const hei = await heiModel.findOne({ heiAdmin: user._id });
-      const projects = await projectModel.create({
+
+      const transactions = await transactionModel.create({
         ...req.body,
-        fundingAgency: fa._id,
-        hei: hei._id,
+        createdBy: user._id,
       });
 
       returnMessage.successMessage(
         res,
         messages.successMessages.addState,
-        projects
+        transactions
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -49,11 +44,13 @@ module.exports = {
   },
   edit: async (req, res) => {
     try {
-      const project = await projectModel.findOne({ _id: req.params["id"] });
+      const transaction = await transactionModel.findOne({
+        _id: req.params["id"],
+      });
       returnMessage.successMessage(
         res,
         messages.successMessages.showState,
-        project
+        transaction
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -61,7 +58,7 @@ module.exports = {
   },
   update: async (req, res) => {
     try {
-      const projects = await projectModel.findByIdAndUpdate(
+      const transactions = await transactionModel.findByIdAndUpdate(
         req.params["id"],
         { ...req.body },
         { new: true }
@@ -69,7 +66,7 @@ module.exports = {
       returnMessage.successMessage(
         res,
         messages.successMessages.updateState,
-        projects
+        transactions
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -77,11 +74,13 @@ module.exports = {
   },
   delete: async (req, res) => {
     try {
-      const project = await projectModel.remove({ _id: req.params["id"] });
+      const transaction = await transactionModel.remove({
+        _id: req.params["id"],
+      });
       returnMessage.successMessage(
         res,
         messages.successMessages.deleteState,
-        project
+        transaction
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -89,13 +88,13 @@ module.exports = {
   },
   show: async (req, res) => {
     try {
-      const project = await projectModel.findOne({
+      const transaction = await transactionModel.findOne({
         _id: req.params["id"],
       });
       returnMessage.successMessage(
         res,
         messages.successMessages.showState,
-        project
+        transaction
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
