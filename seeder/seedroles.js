@@ -146,6 +146,26 @@ const seedRole = [
       "view-project-reviews",
     ],
   },
+  {
+    name: "university-admin",
+    permissions: [
+      "view-profile",
+      "view-analytics",
+      "add-projects",
+      "view-project-members",
+      "view-transactions",
+    ],
+  },
+  {
+    name: "hei-spoc",
+    permissions: [
+      "view-profile",
+      "view-analytics",
+      "add-projects",
+      "view-project-members",
+      "view-transactions",
+    ],
+  },
 ];
 
 const importData = async () => {
