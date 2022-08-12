@@ -87,4 +87,18 @@ module.exports = {
       returnMessage.errorMessage(res, error);
     }
   },
+  show: async (req, res) => {
+    try {
+      const project = await projectModel.findOne({
+        _id: req.params["id"],
+      });
+      returnMessage.successMessage(
+        res,
+        messages.successMessages.showState,
+        project
+      );
+    } catch (error) {
+      returnMessage.errorMessage(res, error);
+    }
+  },
 };

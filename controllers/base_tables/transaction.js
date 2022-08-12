@@ -86,4 +86,18 @@ module.exports = {
       returnMessage.errorMessage(res, error);
     }
   },
+  show: async (req, res) => {
+    try {
+      const transaction = await transactionModel.findOne({
+        _id: req.params["id"],
+      });
+      returnMessage.successMessage(
+        res,
+        messages.successMessages.showState,
+        transaction
+      );
+    } catch (error) {
+      returnMessage.errorMessage(res, error);
+    }
+  },
 };

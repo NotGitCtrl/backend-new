@@ -78,4 +78,18 @@ module.exports = {
       returnMessage.errorMessage(res, error);
     }
   },
+  show: async (req, res) => {
+    try {
+      const report = await reportModel.findOne({
+        _id: req.params["id"],
+      });
+      returnMessage.successMessage(
+        res,
+        messages.successMessages.showState,
+        report
+      );
+    } catch (error) {
+      returnMessage.errorMessage(res, error);
+    }
+  },
 };
