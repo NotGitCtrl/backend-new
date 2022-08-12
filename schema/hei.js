@@ -16,10 +16,10 @@ const HEI = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "district",
   },
-  spoc: {
+  spoc: [{
     type: Schema.Types.ObjectId,
     ref: "user",
-  },
+  }],
   heiAdmin: {
     type: Schema.Types.ObjectId,
     ref: "user",
