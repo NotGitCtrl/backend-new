@@ -58,9 +58,10 @@ module.exports = {
   },
   update: async (req, res) => {
     try {
+      let user = await authUser.getUser(req, res);
       const transactions = await transactionModel.findByIdAndUpdate(
         req.params["id"],
-        { ...req.body },
+        { ...req.body, updatedBy: user._id },
         { new: true }
       );
       returnMessage.successMessage(

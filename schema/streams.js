@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const { Schema } = require("mongoose");
+
 const Stream = new mongoose.Schema({
   name: {
     type: String,
@@ -9,6 +11,14 @@ const Stream = new mongoose.Schema({
     type: String,
   },
   courses: Array,
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
+  updatedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
 });
 
 module.exports = mongoose.model("stream", Stream);

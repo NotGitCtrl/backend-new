@@ -9,6 +9,14 @@ const Schemes = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "fundingAgency",
   },
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
+  updatedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
 });
 
 module.exports = mongoose.model("scheme", Schemes);

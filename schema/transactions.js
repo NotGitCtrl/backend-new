@@ -14,6 +14,11 @@ const transaction = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "user",
   },
+  updatedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
+
   //   docs: {
   //     type: Schema.Types.ObjectId,
   //     ref: "doc",
