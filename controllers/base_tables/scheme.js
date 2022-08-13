@@ -32,6 +32,7 @@ module.exports = {
       const schemes = await schemeModel.create({
         ...req.body,
         fundingAgency: fa._id,
+        createdBy: user._id,
       });
       returnMessage.successMessage(
         res,
@@ -56,9 +57,10 @@ module.exports = {
   },
   update: async (req, res) => {
     try {
+      let user = await authUser.getUser(req, res);
       const schemes = await schemeModel.findByIdAndUpdate(
         req.params["id"],
-        { ...req.body },
+        { ...req.body, updatedBy: user._id },
         { new: true }
       );
       returnMessage.successMessage(

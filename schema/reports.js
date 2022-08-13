@@ -10,6 +10,14 @@ const report = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "project",
   },
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
+  updatedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
 });
 
 module.exports = mongoose.model("report", report);

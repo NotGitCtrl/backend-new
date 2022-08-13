@@ -1,6 +1,7 @@
 const returnMessage = require("../message");
 const messages = require("../../lang/messages.json");
 const reportModel = require("../../schema/reports");
+const authUser = require("../../utils/authUser");
 
 module.exports = {
   index: async (req, res) => {
@@ -25,8 +26,10 @@ module.exports = {
           messages.errorMessages.stateAlreadyExists
         );
 
+      let user = await authUser.getUser(req, res);
       const reports = await reportModel.create({
         ...req.body,
+        createdBy: user._id,
       });
 
       returnMessage.successMessage(
@@ -52,9 +55,10 @@ module.exports = {
   },
   update: async (req, res) => {
     try {
+      let user = await authUser.getUser(req, res);
       const reports = await reportModel.findByIdAndUpdate(
         req.params["id"],
-        { ...req.body },
+        { ...req.body, updatedBy: user._id },
         { new: true }
       );
       returnMessage.successMessage(

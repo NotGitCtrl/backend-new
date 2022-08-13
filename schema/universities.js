@@ -6,7 +6,15 @@ const UniversitySchema = new mongoose.Schema({
   admin: {
     type: Schema.Types.ObjectId,
     ref: "user",
-  }
+  },
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
+  updatedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
 });
 
 module.exports = mongoose.model("university", UniversitySchema);
