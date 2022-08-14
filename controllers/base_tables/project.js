@@ -36,6 +36,7 @@ module.exports = {
         ...req.body,
         fundingAgency: fa._id,
         hei: hei._id,
+        createdBy: user._id,
       });
 
       returnMessage.successMessage(
@@ -61,9 +62,10 @@ module.exports = {
   },
   update: async (req, res) => {
     try {
+      let user = await authUser.getUser(req, res);
       const projects = await projectModel.findByIdAndUpdate(
         req.params["id"],
-        { ...req.body },
+        { ...req.body, updatedBy: user._id },
         { new: true }
       );
       returnMessage.successMessage(
@@ -81,6 +83,20 @@ module.exports = {
       returnMessage.successMessage(
         res,
         messages.successMessages.deleteState,
+        project
+      );
+    } catch (error) {
+      returnMessage.errorMessage(res, error);
+    }
+  },
+  show: async (req, res) => {
+    try {
+      const project = await projectModel.findOne({
+        _id: req.params["id"],
+      });
+      returnMessage.successMessage(
+        res,
+        messages.successMessages.showState,
         project
       );
     } catch (error) {

@@ -1,16 +1,16 @@
-const streamModel = require("../../schema/streams");
 const returnMessage = require("../message");
 const messages = require("../../lang/messages.json");
+const transactionModel = require("../../schema/transactions");
 const authUser = require("../../utils/authUser");
 
 module.exports = {
   index: async (req, res) => {
     try {
-      const streams = await streamModel.find({});
+      const transactions = await transactionModel.find();
       returnMessage.successMessage(
         res,
-        messages.successMessages.getAllCountries,
-        streams
+        messages.successMessages.getAllStates,
+        transactions
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -19,22 +19,24 @@ module.exports = {
   create: async (req, res) => {
     try {
       const { name } = req.body;
-      const isNameTaken = await streamModel.findOne({ name });
+      const isNameTaken = await transactionModel.findOne({ name });
       if (isNameTaken)
         returnMessage.errorMessage(
           res,
-          messages.errorMessages.countryAlreadyExists
+          messages.errorMessages.stateAlreadyExists
         );
 
       let user = await authUser.getUser(req, res);
-      const stream = await streamModel.create({
+
+      const transactions = await transactionModel.create({
         ...req.body,
         createdBy: user._id,
       });
+
       returnMessage.successMessage(
         res,
-        messages.successMessages.addCountry,
-        stream
+        messages.successMessages.addState,
+        transactions
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -42,11 +44,13 @@ module.exports = {
   },
   edit: async (req, res) => {
     try {
-      const stream = await streamModel.findOne({ _id: req.params["id"] });
+      const transaction = await transactionModel.findOne({
+        _id: req.params["id"],
+      });
       returnMessage.successMessage(
         res,
-        messages.successMessages.showCountry,
-        stream
+        messages.successMessages.showState,
+        transaction
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -55,14 +59,15 @@ module.exports = {
   update: async (req, res) => {
     try {
       let user = await authUser.getUser(req, res);
-      const stream = await streamModel.findByIdAndUpdate(req.params["id"], {
-        ...req.body,
-        updatedBy: user._id,
-      });
+      const transactions = await transactionModel.findByIdAndUpdate(
+        req.params["id"],
+        { ...req.body, updatedBy: user._id },
+        { new: true }
+      );
       returnMessage.successMessage(
         res,
-        messages.successMessages.updateCountry,
-        stream
+        messages.successMessages.updateState,
+        transactions
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -70,19 +75,27 @@ module.exports = {
   },
   delete: async (req, res) => {
     try {
-      const stream = await streamModel.remove({ _id: req.params["id"] });
-      returnMessage.successMessage(res, messages.successMessages.deleteCountry);
+      const transaction = await transactionModel.remove({
+        _id: req.params["id"],
+      });
+      returnMessage.successMessage(
+        res,
+        messages.successMessages.deleteState,
+        transaction
+      );
     } catch (error) {
       returnMessage.errorMessage(res, error);
     }
   },
   show: async (req, res) => {
     try {
-      const stream = await streamModel.findOne({ _id: req.params["id"] });
+      const transaction = await transactionModel.findOne({
+        _id: req.params["id"],
+      });
       returnMessage.successMessage(
         res,
-        messages.successMessages.showCountry,
-        stream
+        messages.successMessages.showState,
+        transaction
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);

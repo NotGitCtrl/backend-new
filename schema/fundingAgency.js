@@ -32,5 +32,13 @@ const fundingAgency = new mongoose.Schema({
       ref: "user",
     },
   ],
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
+  updatedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
 });
 module.exports = mongoose.model("fundingAgency", fundingAgency);

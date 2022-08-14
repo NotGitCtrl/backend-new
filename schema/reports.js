@@ -1,11 +1,14 @@
 const mongoose = require("mongoose");
 const { Schema } = require("mongoose");
 
-const UniversitySchema = new mongoose.Schema({
+const report = new mongoose.Schema({
   name: String,
-  admin: {
+  description: String,
+  status: String,
+  remarks: String,
+  project: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: "project",
   },
   createdBy: {
     type: Schema.Types.ObjectId,
@@ -17,4 +20,4 @@ const UniversitySchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("university", UniversitySchema);
+module.exports = mongoose.model("report", report);

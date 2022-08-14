@@ -1,16 +1,16 @@
-const streamModel = require("../../schema/streams");
 const returnMessage = require("../message");
 const messages = require("../../lang/messages.json");
+const reportModel = require("../../schema/reports");
 const authUser = require("../../utils/authUser");
 
 module.exports = {
   index: async (req, res) => {
     try {
-      const streams = await streamModel.find({});
+      const reports = await reportModel.find();
       returnMessage.successMessage(
         res,
-        messages.successMessages.getAllCountries,
-        streams
+        messages.successMessages.getAllStates,
+        reports
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -19,22 +19,23 @@ module.exports = {
   create: async (req, res) => {
     try {
       const { name } = req.body;
-      const isNameTaken = await streamModel.findOne({ name });
+      const isNameTaken = await reportModel.findOne({ name });
       if (isNameTaken)
         returnMessage.errorMessage(
           res,
-          messages.errorMessages.countryAlreadyExists
+          messages.errorMessages.stateAlreadyExists
         );
 
       let user = await authUser.getUser(req, res);
-      const stream = await streamModel.create({
+      const reports = await reportModel.create({
         ...req.body,
         createdBy: user._id,
       });
+
       returnMessage.successMessage(
         res,
-        messages.successMessages.addCountry,
-        stream
+        messages.successMessages.addState,
+        reports
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -42,11 +43,11 @@ module.exports = {
   },
   edit: async (req, res) => {
     try {
-      const stream = await streamModel.findOne({ _id: req.params["id"] });
+      const report = await reportModel.findOne({ _id: req.params["id"] });
       returnMessage.successMessage(
         res,
-        messages.successMessages.showCountry,
-        stream
+        messages.successMessages.showState,
+        report
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -55,14 +56,15 @@ module.exports = {
   update: async (req, res) => {
     try {
       let user = await authUser.getUser(req, res);
-      const stream = await streamModel.findByIdAndUpdate(req.params["id"], {
-        ...req.body,
-        updatedBy: user._id,
-      });
+      const reports = await reportModel.findByIdAndUpdate(
+        req.params["id"],
+        { ...req.body, updatedBy: user._id },
+        { new: true }
+      );
       returnMessage.successMessage(
         res,
-        messages.successMessages.updateCountry,
-        stream
+        messages.successMessages.updateState,
+        reports
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -70,19 +72,25 @@ module.exports = {
   },
   delete: async (req, res) => {
     try {
-      const stream = await streamModel.remove({ _id: req.params["id"] });
-      returnMessage.successMessage(res, messages.successMessages.deleteCountry);
+      const report = await reportModel.remove({ _id: req.params["id"] });
+      returnMessage.successMessage(
+        res,
+        messages.successMessages.deleteState,
+        report
+      );
     } catch (error) {
       returnMessage.errorMessage(res, error);
     }
   },
   show: async (req, res) => {
     try {
-      const stream = await streamModel.findOne({ _id: req.params["id"] });
+      const report = await reportModel.findOne({
+        _id: req.params["id"],
+      });
       returnMessage.successMessage(
         res,
-        messages.successMessages.showCountry,
-        stream
+        messages.successMessages.showState,
+        report
       );
     } catch (error) {
       returnMessage.errorMessage(res, error);

@@ -16,10 +16,12 @@ const HEI = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "district",
   },
-  spoc: [{
-    type: Schema.Types.ObjectId,
-    ref: "user",
-  }],
+  spoc: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
+  ],
   heiAdmin: {
     type: Schema.Types.ObjectId,
     ref: "user",
@@ -29,10 +31,20 @@ const HEI = new mongoose.Schema({
     ref: "university",
   },
   courses: Array,
-  streams: [{
+  streams: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "stream",
+    },
+  ],
+  createdBy: {
     type: Schema.Types.ObjectId,
-    ref: "stream",
-  }]
+    ref: "user",
+  },
+  updatedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
 });
 
 module.exports = mongoose.model("hei", HEI);
