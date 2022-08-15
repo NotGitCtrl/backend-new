@@ -6,9 +6,14 @@ const report = new mongoose.Schema({
   description: String,
   status: String,
   remarks: String,
+  docs: Array,
   project: {
     type: Schema.Types.ObjectId,
     ref: "project",
+  },
+  phase: {
+    type: Schema.Types.ObjectId,
+    ref: "phases",
   },
   createdBy: {
     type: Schema.Types.ObjectId,
@@ -18,6 +23,7 @@ const report = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "user",
   },
+  summary: String
 });
 
 module.exports = mongoose.model("report", report);
