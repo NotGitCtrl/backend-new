@@ -5,16 +5,24 @@ const fundingAgencyModel = require("../../schema/fundingAgency");
 const heiModel = require("../../schema/hei");
 const schemeModel = require("../../schema/schemes");
 const authUser = require("../../utils/authUser");
-
+const userDetails = require("../../utils/authUser");
 module.exports = {
   index: async (req, res) => {
     try {
-      const projects = await projectModel.find();
-      returnMessage.successMessage(
-        res,
-        messages.successMessages.getAllStates,
-        projects
-      );
+      const user = await userDetails.getUser(req,res);
+      // console.log(user.role.name);
+      if(user.role.name == 'super-admin') {
+        const projects = await projectModel.find();
+      }
+      else if(user.role.name == 'fa-admin') {
+        const fundingAgency = await fundingAgencyModel.find({ "admin": { $eq: user._id }});
+        const projects = await projectModel.find({ "fundingAgency": { $eq: fundingAgency._id }});  
+      }
+      else if(user.role.name == 'hei-admin') {
+        const hei = await heiModel.find({ "heiAdmin": { $eq: user._id }});
+        const projects = await projectModel.find({ "fundingAgency": { $eq: hei._id }});
+      }
+      returnMessage.successMessage(res,messages.successMessages.getAllStates,projects);
     } catch (error) {
       returnMessage.errorMessage(res, error);
     }
