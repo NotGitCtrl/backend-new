@@ -6,7 +6,7 @@ module.exports = {
   index: async(req,res) => {
     try {
       const phases = await phaseModel.find({});
-      returnMessage.successMessage(res,messages.successMessages.getAllCountries,fundingAgencies);
+      returnMessage.successMessage(res,messages.successMessages.getAllCountries,phases);
     } catch (error) {
       returnMessage.errorMessage(res,error);
     }
