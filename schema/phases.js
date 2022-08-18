@@ -12,7 +12,6 @@ const phase = new mongoose.Schema({
   endDate: Date,
   startedAt: Date,
   completedAt: Date,
-  courses: Array,
   status: String,
   amountDue: String,
   bills: Array
