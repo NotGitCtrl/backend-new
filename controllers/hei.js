@@ -54,42 +54,52 @@ module.exports = {
   },
   create: async (req, res) => {
     try {
-      const { name } = req.body;
-      const isNameTaken = await heiModel.findOne({ name });
-      if (isNameTaken)
-        returnMessage.errorMessage(res, messages.errorMessages.alreadyExists);
+      if (req.user.role.name == "super-admin") {
+        const { name } = req.body;
+        const isNameTaken = await heiModel.findOne({ name });
+        if (isNameTaken)
+          returnMessage.errorMessage(res, messages.errorMessages.alreadyExists);
 
-      let user = await authUser.getUser(req, res);
-      const hei = await heiModel.create({ ...req.body, createdBy: user._id });
-      await hei.populate(heiPopulate);
-      returnMessage.successMessage(res, messages.successMessages.addHei, hei);
+        let user = await authUser.getUser(req, res);
+        const hei = await heiModel.create({ ...req.body, createdBy: user._id });
+        await hei.populate(heiPopulate);
+        returnMessage.successMessage(res, messages.successMessages.addHei, hei);
+      }
     } catch (error) {
       returnMessage.errorMessage(res, error);
     }
   },
   edit: async (req, res) => {
     try {
-      const hei = await heiModel.findOne({ _id: req.params["id"] });
-      await hei.populate(heiPopulate);
-      returnMessage.successMessage(res, messages.successMessages.showHei, hei);
+      if (req.user.role.name == "super-admin") {
+        const hei = await heiModel.findOne({ _id: req.params["id"] });
+        await hei.populate(heiPopulate);
+        returnMessage.successMessage(
+          res,
+          messages.successMessages.showHei,
+          hei
+        );
+      }
     } catch (error) {
       returnMessage.errorMessage(res, error);
     }
   },
   update: async (req, res) => {
     try {
-      let user = await authUser.getUser(req, res);
-      const hei = await heiModel.findByIdAndUpdate(
-        req.params["id"],
-        { ...req.body, updatedBy: user._id },
-        { new: true }
-      );
-      await hei.populate(heiPopulate);
-      returnMessage.successMessage(
-        res,
-        messages.successMessages.updateHei,
-        hei
-      );
+      if (req.user.role.name == "super-admin") {
+        let user = await authUser.getUser(req, res);
+        const hei = await heiModel.findByIdAndUpdate(
+          req.params["id"],
+          { ...req.body, updatedBy: user._id },
+          { new: true }
+        );
+        await hei.populate(heiPopulate);
+        returnMessage.successMessage(
+          res,
+          messages.successMessages.updateHei,
+          hei
+        );
+      }
     } catch (error) {
       returnMessage.errorMessage(res, error);
     }
