@@ -28,6 +28,14 @@ const project = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "fundingAgency",
   },
+  fundingAgencyCoordinator: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
+  heiCoordinator: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
   hei: [{
     type: Schema.Types.ObjectId,
     ref: "hei",
@@ -51,5 +59,3 @@ const project = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("project", project);
-
-//Change Team members and phases

@@ -10,8 +10,7 @@ async function redirectUser(user) {
       path: 'role',
       select: ['name'],
   })
-  console.log(user.role.name)
-  if(user.role.name == "HEI Admin"){
+  if(user.role.name == "hei-admin"){
     const hei = await heiModel.findOne({ heiAdmin: user._id });
     if(hei){
       return {
@@ -26,7 +25,7 @@ async function redirectUser(user) {
         "redirect": 1
       }
     }
-  }else if(user.role.name == "FA Admin"){
+  }else if(user.role.name == "fa-admin"){
     const fa = await fundingAgencyModel.findOne({ admin: user._id });
     if(fa){
       return {
