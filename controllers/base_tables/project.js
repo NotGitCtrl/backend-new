@@ -22,7 +22,7 @@ module.exports = {
       }
       else if(user.role.name == 'hei-admin') {
         const hei = await heiModel.find({ "heiAdmin": { $eq: user._id }});
-        const projects = await projectModel.find({ "fundingAgency": { $eq: hei._id }});
+        const projects = await projectModel.find({ "hei": { $eq: hei._id }});
         returnMessage.successMessage(res,messages.successMessages.getAllStates,projects);
       }else if (user.role.name == 'fa-project-coordinator') {
         const projects = await projectModel.find({ "fundingAgencyCoordinator": { $eq: user._id }});
