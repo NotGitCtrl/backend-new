@@ -91,28 +91,39 @@ module.exports = {
       returnMessage.errorMessage(res, error);
     }
   },
-  delete: async (req, res) => {
-    try {
-      const project = await projectModel.remove({ _id: req.params["id"] });
-      returnMessage.successMessage(
-        res,
-        messages.successMessages.deleteState,
-        project
-      );
-    } catch (error) {
-      returnMessage.errorMessage(res, error);
-    }
-  },
+  // delete: async (req, res) => {
+  //   try {
+  //     const project = await projectModel.remove({ _id: req.params["id"] });
+  //     returnMessage.successMessage(
+  //       res,
+  //       messages.successMessages.deleteState,
+  //       project
+  //     );
+  //   } catch (error) {
+  //     returnMessage.errorMessage(res, error);
+  //   }
+  // },
   show: async (req, res) => {
     try {
-      const project = await projectModel.findOne({
-        _id: req.params["id"],
-      });
-      returnMessage.successMessage(
-        res,
-        messages.successMessages.showState,
-        project
-      );
+      let user = await authUser.getUser(req, res);
+      const project = await projectModel.findOne({ _id: req.params["id"] });
+      if(user.role.name == 'fa-admin') {
+        const fundingAgency = await fundingAgencyModel.find({ "admin": { $eq: user._id }});
+        if(fundingAgency._id == project.fundingAgency) {
+          returnMessage.successMessage(res,messages.successMessages.showState,project);
+        }
+      } else if(user.role.name == 'hei-admin') {
+        const hei = await heiModel.find({ "heiAdmin": { $eq: user._id }});
+        if(hei._id == project.hei) {
+          returnMessage.successMessage(res,messages.successMessages.showState,project);
+        }
+      } else if(user.role.name == 'fa-project-coordinator') {
+        if(project.fundingAgencyCoordinator.includes(user._id)) {
+          returnMessage.successMessage(res,messages.successMessages.showState,project);
+        }
+      } else  {
+        // Add Later
+      }
     } catch (error) {
       returnMessage.errorMessage(res, error);
     }
