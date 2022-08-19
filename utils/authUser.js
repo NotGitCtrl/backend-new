@@ -5,6 +5,7 @@ const { verify } = require("jsonwebtoken");
 module.exports = {
     getUser: async (req,res) => {
         let token = req.headers.authorization;
+        console.log(req.headers)
         if (token) {
           token = token.split(" ")[1];
           let decoded = verify(token, process.env.JWT_SECRET);
@@ -13,9 +14,8 @@ module.exports = {
           await user.populate({
             path: "role",
           });
+          
           return user 
-        } else {
-          return res.status(401).json({ message: "unathorized user" });
-        }
+        } 
     }
 };

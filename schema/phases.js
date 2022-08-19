@@ -10,8 +10,11 @@ const phase = new mongoose.Schema({
   },
   startDate: Date,
   endDate: Date,
-  courses: Array,
+  startedAt: Date,
+  completedAt: Date,
   status: String,
+  amountDue: String,
+  bills: Array
 });
 
 module.exports = mongoose.model("phases", phase);

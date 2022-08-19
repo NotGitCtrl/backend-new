@@ -6,9 +6,15 @@ const project = new mongoose.Schema({
   description: String,
   status: String,
   createdAt: Date,
+  updatedAt: Date,
+  approvedAmount: String,
+  teamMembers: [{
+    type: Schema.Types.ObjectId,
+    ref: "team_members",
+  }],
   phases: [{
     type: Schema.Types.ObjectId,
-    ref: "phase",
+    ref: "phases",
   }],
   category: {
     type: String,
@@ -30,10 +36,18 @@ const project = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "user",
   },
-  hei: {
+  hei: [{
     type: Schema.Types.ObjectId,
     ref: "hei",
-  },
+  }],
+  faCoordinator : [{
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  }],
+  heiCoordinator : [{
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  }],
   createdBy: {
     type: Schema.Types.ObjectId,
     ref: "user",

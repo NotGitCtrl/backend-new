@@ -10,6 +10,10 @@ const transaction = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "project",
   },
+  phase: {
+    type: Schema.Types.ObjectId,
+    ref: "phases",
+  },
   createdBy: {
     type: Schema.Types.ObjectId,
     ref: "user",
