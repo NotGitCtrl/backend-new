@@ -6,14 +6,10 @@ const project = new mongoose.Schema({
   description: String,
   status: String,
   createdAt: Date,
-  teamMembers: {
-    type: Schema.Types.ObjectId,
-    ref: "teammember",
-  },
-  phases: {
+  phases: [{
     type: Schema.Types.ObjectId,
     ref: "phase",
-  },
+  }],
   category: {
     type: String,
     enum: ["hardware", "software", "hybrid"],
@@ -25,6 +21,14 @@ const project = new mongoose.Schema({
   fundingAgency: {
     type: Schema.Types.ObjectId,
     ref: "fundingAgency",
+  },
+  fundingAgencyCoordinator: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
+  heiCoordinator: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
   },
   hei: {
     type: Schema.Types.ObjectId,
@@ -41,5 +45,3 @@ const project = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("project", project);
-
-//Change Team members and phases
