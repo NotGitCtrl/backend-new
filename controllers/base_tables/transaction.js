@@ -18,57 +18,63 @@ module.exports = {
   },
   create: async (req, res) => {
     try {
-      const { name } = req.body;
-      const isNameTaken = await transactionModel.findOne({ name });
-      if (isNameTaken)
-        returnMessage.errorMessage(
+      if (req.user.role.name == "super-admin") {
+        const { name } = req.body;
+        const isNameTaken = await transactionModel.findOne({ name });
+        if (isNameTaken)
+          returnMessage.errorMessage(
+            res,
+            messages.errorMessages.stateAlreadyExists
+          );
+
+        let user = await authUser.getUser(req, res);
+
+        const transactions = await transactionModel.create({
+          ...req.body,
+          createdBy: user._id,
+        });
+
+        returnMessage.successMessage(
           res,
-          messages.errorMessages.stateAlreadyExists
+          messages.successMessages.addState,
+          transactions
         );
-
-      let user = await authUser.getUser(req, res);
-
-      const transactions = await transactionModel.create({
-        ...req.body,
-        createdBy: user._id,
-      });
-
-      returnMessage.successMessage(
-        res,
-        messages.successMessages.addState,
-        transactions
-      );
+      }
     } catch (error) {
       returnMessage.errorMessage(res, error);
     }
   },
   edit: async (req, res) => {
     try {
-      const transaction = await transactionModel.findOne({
-        _id: req.params["id"],
-      });
-      returnMessage.successMessage(
-        res,
-        messages.successMessages.showState,
-        transaction
-      );
+      if (req.user.role.name == "super-admin") {
+        const transaction = await transactionModel.findOne({
+          _id: req.params["id"],
+        });
+        returnMessage.successMessage(
+          res,
+          messages.successMessages.showState,
+          transaction
+        );
+      }
     } catch (error) {
       returnMessage.errorMessage(res, error);
     }
   },
   update: async (req, res) => {
     try {
-      let user = await authUser.getUser(req, res);
-      const transactions = await transactionModel.findByIdAndUpdate(
-        req.params["id"],
-        { ...req.body, updatedBy: user._id },
-        { new: true }
-      );
-      returnMessage.successMessage(
-        res,
-        messages.successMessages.updateState,
-        transactions
-      );
+      if (req.user.role.name == "super-admin") {
+        let user = await authUser.getUser(req, res);
+        const transactions = await transactionModel.findByIdAndUpdate(
+          req.params["id"],
+          { ...req.body, updatedBy: user._id },
+          { new: true }
+        );
+        returnMessage.successMessage(
+          res,
+          messages.successMessages.updateState,
+          transactions
+        );
+      }
     } catch (error) {
       returnMessage.errorMessage(res, error);
     }
