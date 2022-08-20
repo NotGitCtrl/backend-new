@@ -6,7 +6,7 @@ const authUser = require("../../utils/authUser");
 module.exports = {
   index: async (req, res) => {
     try {
-      const reports = await reportModel.find();
+      const reports = await reportModel.find({ project: req.params["id"] });
       returnMessage.successMessage(
         res,
         messages.successMessages.getAllStates,
