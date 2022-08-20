@@ -16,7 +16,7 @@ module.exports = {
         returnMessage.successMessage(res,messages.successMessages.getAllStates,projects);
       }
       else if(user.role.name == 'fa-admin') {
-        const fundingAgency = await fundingAgencyModel.find({ "admin": { $eq: user._id }});
+        const fundingAgency = await fundingAgencyModel.findOne({ "admin": { $eq: user._id }});
         const projects = await projectModel.find({ "fundingAgency": { $eq: fundingAgency._id }});  
         returnMessage.successMessage(res,messages.successMessages.getAllStates,projects);
       }
@@ -76,8 +76,8 @@ module.exports = {
     try {
       let user = await authUser.getUser(req, res);
       const project = await projectModel.findOne({ _id: req.params["id"] });
-      const fundingAgency = await fundingAgencyModel.find({ "admin": { $eq: user._id }});
-      if(user.role.name == 'fa-admin' && fundingAgency._id == project.fundingAgency) {
+      const fundingAgency = await fundingAgencyModel.findOne({ "admin": { $eq: user._id }});
+      if(user.role.name == 'fa-admin' && fundingAgency._id.equals(project.fundingAgency)) {
         const project = await projectModel.findByIdAndUpdate(
           req.params["id"],
           { ...req.body, updatedBy: user._id },
@@ -108,8 +108,8 @@ module.exports = {
       let user = await authUser.getUser(req, res);
       const project = await projectModel.findOne({ _id: req.params["id"] });
       if(user.role.name == 'fa-admin') {
-        const fundingAgency = await fundingAgencyModel.find({ "admin": { $eq: user._id }});
-        if(fundingAgency._id == project.fundingAgency) {
+        const fundingAgency = await fundingAgencyModel.findOne({ "admin": { $eq: user._id }});
+        if(fundingAgency._id.equals(project.fundingAgency)){
           returnMessage.successMessage(res,messages.successMessages.showState,project);
         }
       } else if(user.role.name == 'hei-admin') {

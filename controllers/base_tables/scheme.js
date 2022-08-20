@@ -7,7 +7,7 @@ const authUser = require("../../utils/authUser");
 module.exports = {
   index: async (req, res) => {
     try {
-      const user = await userDetails.getUser(req,res);
+      const user = await authUser.getUser(req,res);
       if(user.role.name == 'super-admin') {
         const schemes = await schemeModel.find();
         returnMessage.successMessage(
@@ -16,7 +16,7 @@ module.exports = {
           schemes
         );
       } else if(user.role.name == 'fa-admin') {
-        const fundingAgency = await fundingAgencyModel.find({ "admin": { $eq: user._id }});
+        const fundingAgency = await fundingAgencyModel.findOne({ "admin": { $eq: user._id }});
         const schemes = await schemeModel.find({ "fundingAgency": { $eq: fundingAgency._id }});
         returnMessage.successMessage(
           res,
@@ -80,7 +80,7 @@ module.exports = {
       if(user.role.name == 'fa-admin') {
         const fa = await fundingAgencyModel.findOne({ admin: user._id });
         const schemes = await schemeModel.findOne({ _id: req.params["id"] });
-        if(schemes.fundingAgency == fa._id) {
+        if(schemes.fundingAgency.equals(fa._id)) {
           const schemes = await schemeModel.findByIdAndUpdate(
             req.params["id"],
             { ...req.body, updatedBy: user._id },

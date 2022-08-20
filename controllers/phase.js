@@ -5,7 +5,7 @@ const messages = require("../lang/messages.json");
 module.exports = {
   index: async (req, res) => {
     try {
-      const phases = await phaseModel.find({});
+      const phases = await phaseModel.find({ projectId: req.params["id"] });
       returnMessage.successMessage(
         res,
         messages.successMessages.getAllCountries,

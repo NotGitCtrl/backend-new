@@ -5,7 +5,7 @@ const roleMiddleware = require("../middleware/roleMiddleware");
 
 // const { validateHei, heiValidateRules } = require("../validations/base-tables");
 
-router.get("/", phase.index);
+router.get("/:id/list", phase.index);
 router.post("/", roleMiddleware, phase.create);
 router.get("/:id/edit", roleMiddleware, phase.edit);
 router.put("/:id", roleMiddleware, phase.update);
