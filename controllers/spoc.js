@@ -18,7 +18,7 @@ module.exports = {
   },
   create: async (req, res) => {
     try {
-      if (req.user.role.name == "super-admin") {
+      if (req.user.role.name == "hei-admin") {
         const {name} = req.body;
         const isNameTaken = await spocModel.findOne({name});
         if (isNameTaken)
@@ -44,7 +44,7 @@ module.exports = {
   },
   edit: async (req, res) => {
     try {
-      if (req.user.role.name == "super-admin") {
+      if (req.user.role.name == "hei-admin") {
         const spoc = await spocModel.findOne({
           _id: req.params["id"],
         });
@@ -60,7 +60,7 @@ module.exports = {
   },
   update: async (req, res) => {
     try {
-      if (req.user.role.name == "super-admin") {
+      if (req.user.role.name == "hei-admin") {
         let user = await authUser.getUser(req, res);
         const spoc = await spocModel.findByIdAndUpdate(req.params["id"], {
           ...req.body,
@@ -87,17 +87,19 @@ module.exports = {
     }
   },
   show: async (req, res) => {
-    try {
-      const spoc = await spocModel.findOne({
-        _id: req.params["id"],
-      });
-      returnMessage.successMessage(
-        res,
-        messages.successMessages.showCountry,
-        spoc
-      );
-    } catch (error) {
-      returnMessage.errorMessage(res, error);
+    if (req.user.role.name == "hei-admin") {
+      try {
+        const spoc = await spocModel.findOne({
+          _id: req.params["id"],
+        });
+        returnMessage.successMessage(
+          res,
+          messages.successMessages.showCountry,
+          spoc
+        );
+      } catch (error) {
+        returnMessage.errorMessage(res, error);
+      }
     }
   },
 };
