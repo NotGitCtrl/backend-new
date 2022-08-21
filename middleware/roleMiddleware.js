@@ -6,10 +6,7 @@ module.exports = async (req,res,next) => {
     let token = req.headers.authorization;
     if (token) {
         const tokenData = verifyToken(token); 
-        const user = await userModel.findOne({ email: tokenData.email });
-        await user.populate({
-            path: "role",
-        });
+        const user = await userModel.findOne({ email: tokenData.email }).populate({ path: 'role'});
         req.user = user;
         next();
     } else {
