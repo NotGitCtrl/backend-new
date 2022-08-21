@@ -142,7 +142,6 @@ const seedRole = [
       "add-projects",
       "add-project-stages",
       "add-project-proposal",
-      "add-bill",
       "view-project-reviews",
     ],
   },
@@ -166,7 +165,19 @@ const seedRole = [
       "view-transactions",
     ],
   },
+  {
+    name: "team-leader",
+    permissions: [
+      "view-profile",
+      "add-projects",
+      "add-project-stages",
+      "add-project-proposal",
+      "add-bill",
+      "view-project-reviews",
+    ],
+  },
 ];
+//team leader
 
 const importData = async () => {
   try {
@@ -176,7 +187,7 @@ const importData = async () => {
     process.exit();
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error });
+    res.status(500).json({error});
   }
 };
 

@@ -54,7 +54,7 @@ const seedUser = [];
 
 const seedData = async () => {
   for (let seeder of seeders) {
-    const role = await roleModel.findOne({ name: seeder.role });
+    const role = await roleModel.findOne({name: seeder.role});
     seedUser.push({
       email: seeder.email,
       hash: "",
@@ -70,7 +70,7 @@ const seedData = async () => {
 
   const importData = async () => {
     try {
-      // await userModel.deleteMany();
+      await userModel.deleteMany();
       await userModel.insertMany(seedUser);
       let users = await userModel.find();
       for (let i in users) {
@@ -80,8 +80,8 @@ const seedData = async () => {
           .pbkdf2Sync("password", salt, 1000, 64, `sha512`)
           .toString(`hex`);
         await userModel.findOneAndUpdate(
-          { _id: userId },
-          { hash: hash, salt: salt }
+          {_id: userId},
+          {hash: hash, salt: salt}
         );
       }
       console.log("Data imported successfully");
