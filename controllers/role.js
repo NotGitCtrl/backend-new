@@ -3,9 +3,21 @@ const returnMessages = require("./message");
 const messages = require("../lang/messages.json");
 
 module.exports = {
+  index: async (req, res) => {
+    try {
+      const role = await Role.find({});
+      returnMessages.successMessage(
+        res,
+        messages.successMessages.getAllCountries,
+        role
+      );
+    } catch (error) {
+      returnMessages.errorMessage(res, error);
+    }
+  },
   create: async (req, res) => {
     try {
-      let { name, permissions } = req.body;
+      let {name, permissions} = req.body;
       const role = new Role({
         name,
         permissions,
