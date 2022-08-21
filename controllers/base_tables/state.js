@@ -6,19 +6,8 @@ const authUser = require("../../utils/authUser");
 module.exports = {
   index: async (req, res) => {
     try {
-      const states = await stateModel.find();
-      states.forEach((state) => {
-        state.populate({
-          path: "country",
-          select: ["name"],
-        });
-      });
-      console.log(states);
-      returnMessage.successMessage(
-        res,
-        messages.successMessages.getAllStates,
-        states
-      );
+      const states = await stateModel.find().populate({ path: 'country', select: ["name"]});
+      returnMessage.successMessage(res,messages.successMessages.getAllStates,states);
     } catch (error) {
       returnMessage.errorMessage(res, error);
     }
@@ -26,29 +15,17 @@ module.exports = {
   create: async (req, res) => {
     try {
       if (req.user.role.name == "super-admin") {
-        const { name, country_id } = req.body;
-        const isNameTaken = await stateModel.findOne({ name });
-        if (isNameTaken)
-          returnMessage.errorMessage(
-            res,
-            messages.errorMessages.stateAlreadyExists
-          );
-
         let user = await authUser.getUser(req, res);
         const state = await stateModel.create({
-          country: country_id,
-          name: name,
+          country: req.body.country_id,
+          name: req.body.name,
           createdBy: user._id,
         });
         await state.populate({
           path: "country",
           select: ["name"],
         });
-        returnMessage.successMessage(
-          res,
-          messages.successMessages.addState,
-          state
-        );
+        returnMessage.successMessage(res,messages.successMessages.addState,state);
       }
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -57,16 +34,8 @@ module.exports = {
   edit: async (req, res) => {
     try {
       if (req.user.role.name == "super-admin") {
-        const state = await stateModel.findOne({ _id: req.params["id"] });
-        await state.populate({
-          path: "country",
-          select: ["name"],
-        });
-        returnMessage.successMessage(
-          res,
-          messages.successMessages.showState,
-          state
-        );
+        const state = await stateModel.findOne({ _id: req.params["id"] }).populate({ path: "country", select: ["name"]});
+        returnMessage.successMessage(res,messages.successMessages.showState,state);
       }
     } catch (error) {
       returnMessage.errorMessage(res, error);
@@ -88,40 +57,28 @@ module.exports = {
           path: "country",
           select: ["name"],
         });
-        returnMessage.successMessage(
-          res,
-          messages.successMessages.updateState,
-          state
-        );
+        returnMessage.successMessage(res,messages.successMessages.updateState,state);
       }
     } catch (error) {
       returnMessage.errorMessage(res, error);
     }
   },
-  delete: async (req, res) => {
-    try {
-      const state = await stateModel.remove({ _id: req.params["id"] });
-      returnMessage.successMessage(
-        res,
-        messages.successMessages.deletestate,
-        state
-      );
-    } catch (error) {
-      returnMessage.errorMessage(res, error);
-    }
-  },
+  // delete: async (req, res) => {
+  //   try {
+  //     const state = await stateModel.remove({ _id: req.params["id"] });
+  //     returnMessage.successMessage(
+  //       res,
+  //       messages.successMessages.deletestate,
+  //       state
+  //     );
+  //   } catch (error) {
+  //     returnMessage.errorMessage(res, error);
+  //   }
+  // },
   show: async (req, res) => {
     try {
-      const state = await stateModel.findOne({ _id: req.params["id"] });
-      await state.populate({
-        path: "country",
-        select: ["name"],
-      });
-      returnMessage.successMessage(
-        res,
-        messages.successMessages.showstate,
-        state
-      );
+      const state = await stateModel.findOne({ _id: req.params["id"] }).populate({ path: "country", select: ["name"]});
+      returnMessage.successMessage(res,messages.successMessages.showstate,state);
     } catch (error) {
       returnMessage.errorMessage(res, error);
     }
