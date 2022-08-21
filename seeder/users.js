@@ -58,8 +58,8 @@ const seedData = async () => {
     seedUser.push({
       email: seeder.email,
       hash: "",
-      firstName: "Genric Name",
-      lastName: "Generic Last Name",
+      firstName: "First",
+      lastName: "Last",
       mobile: "5869437212",
       dob: "2018-12-10T13:45:00.000Z",
       salt: "",

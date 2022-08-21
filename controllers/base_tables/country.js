@@ -18,10 +18,10 @@ module.exports = {
   },
   create: async (req, res) => {
     try {
-      if(req.user.role.name == 'super-admin') {
+      if (req.user.role.name == "super-admin") {
         const country = await countryModel.create({
           ...req.body,
-          createdBy: user._id,
+          createdBy: req.user._id,
         });
         returnMessage.successMessage(
           res,
@@ -35,7 +35,7 @@ module.exports = {
   },
   edit: async (req, res) => {
     try {
-      if(req.user.role.name == 'super-admin') {
+      if (req.user.role.name == "super-admin") {
         const country = await countryModel.findOne({ _id: req.params["id"] });
         returnMessage.successMessage(
           res,
@@ -50,10 +50,10 @@ module.exports = {
   update: async (req, res) => {
     try {
       // let user = await authUser.getUser(req, res);
-      if(req.user.role.name == 'super-admin') {
+      if (req.user.role.name == "super-admin") {
         const country = await countryModel.findByIdAndUpdate(
           req.params["id"],
-          { ...req.body, updatedBy: user._id },
+          { ...req.body, updatedBy: req.user._id },
           { new: true }
         );
         returnMessage.successMessage(
@@ -76,7 +76,7 @@ module.exports = {
   // },
   show: async (req, res) => {
     try {
-      if(req.user.role.name == 'super-admin') {
+      if (req.user.role.name == "super-admin") {
         const country = await countryModel.findOne({ _id: req.params["id"] });
         returnMessage.successMessage(
           res,

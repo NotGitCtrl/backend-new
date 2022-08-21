@@ -1,4 +1,5 @@
 const fundingAgency = require("../controllers/fundingAgency");
+const roleMiddleware = require("../middleware/roleMiddleware");
 
 const router = require("express").Router();
 
@@ -13,13 +14,15 @@ router.post(
   "/",
   fundingAgencyValidateRules(),
   validateFundingAgency,
+  roleMiddleware,
   fundingAgency.create
 );
-router.get("/:id/edit", fundingAgency.edit);
+router.get("/:id/edit", roleMiddleware, fundingAgency.edit);
 router.put(
   "/:id",
   fundingAgencyValidateRules(),
   validateFundingAgency,
+  roleMiddleware,
   fundingAgency.update
 );
 router.delete("/:id", fundingAgency.delete);
