@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Schema } = require("mongoose");
+const {Schema} = require("mongoose");
 
 const teamMember = new mongoose.Schema({
   projectId: {
@@ -10,7 +10,9 @@ const teamMember = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "user",
   },
-  position: String,
+  isLeader: {
+    type: Boolean,
+  },
 });
 
 module.exports = mongoose.model("team_members", teamMember);

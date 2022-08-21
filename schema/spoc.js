@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const {Schema} = require("mongoose");
 
-const fundingAgency = new mongoose.Schema({
+const spocSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -26,12 +26,6 @@ const fundingAgency = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "user",
   },
-  employees: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "user",
-    },
-  ],
   createdBy: {
     type: Schema.Types.ObjectId,
     ref: "user",
@@ -41,4 +35,5 @@ const fundingAgency = new mongoose.Schema({
     ref: "user",
   },
 });
-module.exports = mongoose.model("fundingAgency", fundingAgency);
+
+module.exports = mongoose.model("spoc", spocSchema);
