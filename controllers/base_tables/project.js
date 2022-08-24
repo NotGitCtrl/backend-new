@@ -10,24 +10,24 @@ module.exports = {
   index: async (req, res) => {
     try {
       const user = await userDetails.getUser(req,res);
-      // console.log(user.role.name);
-      if(user.role.name == 'super-admin') {
+      // console.log(req.user.role.name);
+      if(req.user.role.name == 'super-admin') {
         const projects = await projectModel.find();
         returnMessage.successMessage(res,messages.successMessages.getAllStates,projects);
       }
-      else if(user.role.name == 'fa-admin') {
+      else if(req.user.role.name == 'fa-admin') {
         const fundingAgency = await fundingAgencyModel.findOne({ "admin": { $eq: user._id }});
         const projects = await projectModel.find({ "fundingAgency": { $eq: fundingAgency._id }});  
         returnMessage.successMessage(res,messages.successMessages.getAllStates,projects);
       }
-      else if(user.role.name == 'hei-admin') {
+      else if(req.user.role.name == 'hei-admin') {
         const hei = await heiModel.find({ "heiAdmin": { $eq: user._id }});
         const projects = await projectModel.find({ "hei": { $eq: hei._id }});
         returnMessage.successMessage(res,messages.successMessages.getAllStates,projects);
-      }else if (user.role.name == 'fa-project-coordinator') {
+      }else if (req.user.role.name == 'fa-project-coordinator') {
         const projects = await projectModel.find({ "fundingAgencyCoordinator": { $eq: user._id }});
         returnMessage.successMessage(res,messages.successMessages.getAllStates,projects);
-      }else if(user.role.name == 'hei-project-coordinator') {
+      }else if(req.user.role.name == 'hei-project-coordinator') {
         const projects = await projectModel.find({ "heiCoordinator": { $eq: user._id }});
         returnMessage.successMessage(res,messages.successMessages.getAllStates,projects);
       }
@@ -41,7 +41,7 @@ module.exports = {
   create: async (req, res) => {
     try {
       let user = await authUser.getUser(req, res);
-      if(user.role.name == 'fa-admin'){
+      if(req.user.role.name == 'fa-admin'){
         const fa = await fundingAgencyModel.findOne({ admin: user._id })
         const projects = await projectModel.create({
           ...req.body,
@@ -62,7 +62,7 @@ module.exports = {
       let user = await authUser.getUser(req, res);  
       const project = await projectModel.findOne({ _id: req.params["id"] });
       const fundingAgency = await fundingAgencyModel.find({ "admin": { $eq: user._id }});
-      if(user.role.name == 'fa-admin' && fundingAgency._id == project.fundingAgency) {
+      if(req.user.role.name == 'fa-admin' && fundingAgency._id.equals(project.fundingAgency)) {
         returnMessage.successMessage(res,messages.successMessages.showState,project);
       } else {
         returnMessage.errorMessage(res,messages.errorMessages.incorrectRole);
@@ -77,7 +77,7 @@ module.exports = {
       let user = await authUser.getUser(req, res);
       const project = await projectModel.findOne({ _id: req.params["id"] });
       const fundingAgency = await fundingAgencyModel.findOne({ "admin": { $eq: user._id }});
-      if(user.role.name == 'fa-admin' && fundingAgency._id.equals(project.fundingAgency)) {
+      if(req.user.role.name == 'fa-admin' && fundingAgency._id.equals(project.fundingAgency)) {
         const project = await projectModel.findByIdAndUpdate(
           req.params["id"],
           { ...req.body, updatedBy: user._id },
@@ -105,19 +105,18 @@ module.exports = {
   // },
   show: async (req, res) => {
     try {
-      let user = await authUser.getUser(req, res);
       const project = await projectModel.findOne({ _id: req.params["id"] });
-      if(user.role.name == 'fa-admin') {
+      if(req.user.role.name == 'fa-admin') {
         const fundingAgency = await fundingAgencyModel.findOne({ "admin": { $eq: user._id }});
         if(fundingAgency._id.equals(project.fundingAgency)){
           returnMessage.successMessage(res,messages.successMessages.showState,project);
         }
-      } else if(user.role.name == 'hei-admin') {
+      } else if(req.user.role.name == 'hei-admin') {
         const hei = await heiModel.find({ "heiAdmin": { $eq: user._id }});
         if(hei._id == project.hei) {
           returnMessage.successMessage(res,messages.successMessages.showState,project);
         }
-      } else if(user.role.name == 'fa-project-coordinator') {
+      } else if(req.user.role.name == 'fa-project-coordinator') {
         if(project.fundingAgencyCoordinator.includes(user._id)) {
           returnMessage.successMessage(res,messages.successMessages.showState,project);
         }
@@ -126,6 +125,26 @@ module.exports = {
       }
     } catch (error) {
       returnMessage.errorMessage(res, error);
+    }
+  },
+
+  getProjectCoordinators: async(req,res) => {
+    try {
+      if(req.user.role.name == 'fa-admin') {
+        const fundingAgency = await fundingAgencyModel.findOne({ "admin": { $eq: user._id }});
+        let projects = await projectModel.find({ "fundingAgency": fundingAgency._id}).populate({ path: "fundingAgencyCoordinator",
+        select: ["name"]});
+        returnMessage.successMessage(res,messages.successMessages.showState,projects);
+      } else if(req.user.role.name == 'hei-admin') {
+        const hei = await heiModel.find({ "heiAdmin": { $eq: user._id }});
+        const projects = await projectModel.find({ "hei": { $eq: hei._id }}).populate({ path: "fundingAgencyCoordinator",
+        select: ["name"]});
+        returnMessage.successMessage(res,messages.successMessages.getAllStates,projects);
+      } else {
+        returnMessage.errorMessage(res,messages.errorMessages.incorrectRole);
+      }
+    } catch(error) {
+      returnMessage.errorMessage(res,error);
     }
   },
 };

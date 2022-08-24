@@ -1,8 +1,8 @@
 const user = require("../controllers/user");
 
 const router = require("express").Router();
-
-router.post("/list", user.getUserAccToRole);
+const roleMiddleware = require("../../middleware/roleMiddleware");
+router.post("/list", roleMiddleware, user.getUserAccToRole);
 // router.get("/users", user.show);
 
 module.exports = router;
