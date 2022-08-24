@@ -4,6 +4,7 @@ const fundingAgencyModel = require("../schema/fundingAgency");
 const returnMessages = require("./message");
 const messages = require("../lang/messages.json");
 const {hashPassword, signToken, verifyToken} = require("../utils");
+const authUser = require("../utils/authUser");
 
 async function redirectUser(user) {
   await user.populate({
@@ -128,4 +129,16 @@ module.exports = {
       returnMessages.errorMessage(res, error);
     }
   },
+  show: async(req, res)=>{
+    try {
+      let user = await authUser.getUser(req, res);
+      returnMessages.successMessage(
+        res,
+        messages.successMessages.showCountry,
+        user
+      );
+    } catch (error) {
+      returnMessages.errorMessage(res, error);
+    }
+  }
 };
