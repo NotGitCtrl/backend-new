@@ -12,6 +12,6 @@ const router = require("express").Router();
 router.post("/register", user.register);
 router.post("/login", loginAuthRules(), validateLogin, user.login);
 router.post("/users/list", user.list);
-router.get("/users/:id", user.show);
+router.get("/users", user.show);
 
 module.exports = router;
