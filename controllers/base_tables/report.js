@@ -30,6 +30,8 @@ module.exports = {
         let user = await authUser.getUser(req, res);
         const reports = await reportModel.create({
           ...req.body,
+          isHeiApproved: false,
+          isFaApproved: false,
           createdBy: user._id,
         });
 
@@ -70,6 +72,38 @@ module.exports = {
           res,
           messages.successMessages.updateState,
           reports
+        );
+      }
+    } catch (error) {
+      returnMessage.errorMessage(res, error);
+    }
+  },
+  approve: async (req, res) => {
+    try {
+      if (req.user.role.name == "hei-admin") {
+        let user = await authUser.getUser(req, res);
+        const report = await reportModel.findByIdAndUpdate(req.params["id"], {
+          ...req.body,
+          isHeiApproved: true,
+          approvedByHei: user._id,
+        });
+        returnMessage.successMessage(
+          res,
+          messages.successMessages.updateCountry,
+          report
+        );
+      }
+      else if (req.user.role.name == "fa-admin") {
+        let user = await authUser.getUser(req, res);
+        const report = await reportModel.findByIdAndUpdate(req.params["id"], {
+          ...req.body,
+          isFaApproved: true,
+          approvedByFa: user._id,
+        });
+        returnMessage.successMessage(
+          res,
+          messages.successMessages.updateCountry,
+          report
         );
       }
     } catch (error) {
