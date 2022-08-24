@@ -128,4 +128,18 @@ module.exports = {
       returnMessages.errorMessage(res, error);
     }
   },
+  show: async(req, res)=>{
+    try {
+      const user = await userModel.findOne({
+        _id: req.params["id"],
+      });
+      returnMessages.successMessage(
+        res,
+        messages.successMessages.showCountry,
+        user
+      );
+    } catch (error) {
+      returnMessages.errorMessage(res, error);
+    }
+  }
 };
