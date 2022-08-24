@@ -95,16 +95,23 @@ module.exports = {
       }
       else if (req.user.role.name == "fa-admin") {
         let user = await authUser.getUser(req, res);
-        const report = await reportModel.findByIdAndUpdate(req.params["id"], {
-          ...req.body,
-          isFaApproved: true,
-          approvedByFa: user._id,
-        });
-        returnMessage.successMessage(
-          res,
-          messages.successMessages.updateCountry,
-          report
-        );
+        const isHeiApproved = await reportModel.findById(req.params["id"]);
+        if(isHeiApproved.isHeiApproved){
+          const report = await reportModel.findByIdAndUpdate(req.params["id"], {
+            ...req.body,
+            isFaApproved: true,
+            approvedByFa: user._id,
+          });
+          returnMessage.successMessage(
+            res,
+            messages.successMessages.updateCountry,
+            report
+          );
+        }
+        else{
+          returnMessage.errorMessage(res, "Not Approved by HEI");
+        }
+        
       }
     } catch (error) {
       returnMessage.errorMessage(res, error);
