@@ -30,6 +30,86 @@ const seedData = async () => {
       name: "Assam",
       country: india._id,
     },
+    {
+      name: "Goa",
+      country: india._id,
+    },
+    {
+      name: "Rajasthan",
+      country: india._id,
+    },
+    {
+      name: "Arunanchal Pradesh",
+      country: india._id,
+    },
+    {
+      name: "Himachal Pradesh",
+      country: india._id,
+    },
+    {
+      name: "Chattisgarh",
+      country: india._id,
+    },
+    {
+      name: "West Bengal",
+      country: india._id,
+    },
+    {
+      name: "Haryana",
+      country: india._id,
+    },
+    {
+      name: "Gujrat",
+      country: india._id,
+    },
+    {
+      name: "Karnataka",
+      country: india._id,
+    },
+    {
+      name: "Bihar",
+      country: india._id,
+    },
+    {
+      name: "Uttar Pradesh",
+      country: india._id,
+    },
+    {
+      name: "Jharkhand",
+      country: india._id,
+    },
+    {
+      name: "Meghalaya",
+      country: india._id,
+    },
+    {
+      name: "Nagaland",
+      country: india._id,
+    },
+    {
+      name: "Mizoram",
+      country: india._id,
+    },
+    {
+      name: "Sikkim",
+      country: india._id,
+    },
+    {
+      name: "Kerala",
+      country: india._id,
+    },
+    {
+      name: "Punjab",
+      country: india._id,
+    },
+    {
+      name: "Andhra Pradesh",
+      country: india._id,
+    },
+    {
+      name: "Madhya Pradesh",
+      country: india._id,
+    },
   ];
 
   const importData = async () => {

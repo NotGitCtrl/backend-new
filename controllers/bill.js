@@ -18,7 +18,7 @@ module.exports = {
   },
   create: async (req, res) => {
     try {
-      if (req.user.role.name == "super-admin") {
+      if (req.user.role.name == "hei-admin") {
         const {name} = req.body;
         const isNameTaken = await billModel.findOne({name});
         if (isNameTaken)
@@ -44,7 +44,7 @@ module.exports = {
   },
   edit: async (req, res) => {
     try {
-      if (req.user.role.name == "super-admin") {
+      if (req.user.role.name == "hei-admin") {
         const bill = await billModel.findOne({
           _id: req.params["id"],
         });
