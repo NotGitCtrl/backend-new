@@ -9,6 +9,16 @@ const billSchema = new mongoose.Schema({
     ref: "user",
   },
   isApproved: Boolean,
+  project:{
+    type: Schema.Types.ObjectId,
+    ref: "project",
+  },
+  hei:{
+    type: Schema.Types.ObjectId,
+    ref: "hei",
+  },
+  docs: Array,
+  items: Array,
   createdBy: {
     type: Schema.Types.ObjectId,
     ref: "user",
@@ -20,3 +30,4 @@ const billSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("bill", billSchema);
+//projectid , heiid, faid , docs[], items[]

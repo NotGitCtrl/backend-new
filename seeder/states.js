@@ -111,7 +111,6 @@ const seedData = async () => {
       name: "Madhya Pradesh",
       country: india._id,
     },
-
   ];
 
   const importData = async () => {
