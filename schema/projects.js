@@ -24,6 +24,10 @@ const project = new mongoose.Schema({
     type: String,
     enum: ["hardware", "software", "hybrid"],
   },
+  projectProposal: {
+    type: Schema.Types.ObjectId,
+    ref: "projectProposal",
+  },
   scheme: {
     type: Schema.Types.ObjectId,
     ref: "scheme",
@@ -40,18 +44,10 @@ const project = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "user",
   },
-  hei: [
-    {
+  hei: {
       type: Schema.Types.ObjectId,
       ref: "hei",
-    },
-  ],
-  heiCoordinator: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "user",
-    },
-  ],
+  },
   createdBy: {
     type: Schema.Types.ObjectId,
     ref: "user",
