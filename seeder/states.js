@@ -2,13 +2,14 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const dbConnection = require("../utils/DBconnection");
 const countryModel = require("../schema/countries");
+const stateModel = require("../schema/states");
 
 const connectToMongo = async () => {
   await dbConnection(process.env.MONGO_URI);
 };
 connectToMongo();
 
-const stateModel = require("../schema/states");
+
 
 const seedData = async () => {
   const india = await countryModel.findOne({ name: "India" });
