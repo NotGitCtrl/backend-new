@@ -148,7 +148,7 @@ module.exports = {
   getProjectsAccToProposal: async(req,res) => {
     try {
       const projects = await projectModel.find({ projectProposal: req.params.id });
-      returnMessage(res, messages.successMessages.addCountry, projects);
+      returnMessage.successMessage(res, messages.successMessages.addCountry, projects);
     } catch(error) {
       // error handling
     }
@@ -160,7 +160,7 @@ module.exports = {
         const project = await projectModel.find({ _id: req.params.projectId });
         if(fundingAgency._id.equals(project.fundingAgency)) {
           await project.update({ status: "Approved" });
-          returnMessage(res, messages.successMessages.addCountry, project);
+          returnMessage.successMessage(res, messages.successMessages.addCountry, project);
         } else {
           // Error Handling
         }
