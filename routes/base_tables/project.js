@@ -2,7 +2,7 @@ const project = require("../../controllers/base_tables/project");
 const router = require("express").Router();
 const roleMiddleware = require("../../middleware/roleMiddleware");
 
-router.get("/", project.index);
+router.get("/",roleMiddleware, project.index);
 router.post("/",roleMiddleware, project.create);
 router.get("/:id/edit",roleMiddleware, project.edit);
 router.put("/:id",roleMiddleware, project.update);

@@ -18,7 +18,7 @@ module.exports = {
   },
   create: async (req, res) => {
     try {
-      if (req.user.role.name == "super-admin") {
+      if ((req.user.role.name == "hei-admin") || (req.user.role.name == "fa-admin")) {
         const { name } = req.body;
         const isNameTaken = await reportModel.findOne({ name });
         if (isNameTaken)
@@ -61,7 +61,7 @@ module.exports = {
   },
   update: async (req, res) => {
     try {
-      if (req.user.role.name == "super-admin") {
+      if ((req.user.role.name == "hei-admin") || (req.user.role.name == "fa-admin")) {
         let user = await authUser.getUser(req, res);
         const reports = await reportModel.findByIdAndUpdate(
           req.params["id"],
