@@ -15,6 +15,16 @@ const report = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "phases",
   },
+  isHeiApproved: Boolean,
+  approvedByHei: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
+  isFaApproved: Boolean,
+  approvedByFa: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
   createdBy: {
     type: Schema.Types.ObjectId,
     ref: "user",
