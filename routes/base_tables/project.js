@@ -3,9 +3,9 @@ const router = require("express").Router();
 const roleMiddleware = require("../../middleware/roleMiddleware");
 
 router.get("/", project.index);
-router.post("/", project.create);
-router.get("/:id/edit", project.edit);
-router.put("/:id", project.update);
+router.post("/",roleMiddleware, project.create);
+router.get("/:id/edit",roleMiddleware, project.edit);
+router.put("/:id",roleMiddleware, project.update);
 // router.delete("/:id", project.delete);
 router.get("/:id", project.show);
 router.get("/getProjectCoordinators",roleMiddleware,project.getProjectCoordinators);
