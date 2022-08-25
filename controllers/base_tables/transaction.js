@@ -18,7 +18,7 @@ module.exports = {
   },
   create: async (req, res) => {
     try {
-      if (req.user.role.name == "super-admin") {
+      if (req.user.role.name == "fa-admin") {
         const { name } = req.body;
         const isNameTaken = await transactionModel.findOne({ name });
         if (isNameTaken)
@@ -28,7 +28,6 @@ module.exports = {
           );
 
         let user = await authUser.getUser(req, res);
-
         const transactions = await transactionModel.create({
           ...req.body,
           createdBy: user._id,
@@ -46,7 +45,7 @@ module.exports = {
   },
   edit: async (req, res) => {
     try {
-      if (req.user.role.name == "super-admin") {
+      if (req.user.role.name == "fa-admin") {
         const transaction = await transactionModel.findOne({
           _id: req.params["id"],
         });
@@ -62,7 +61,7 @@ module.exports = {
   },
   update: async (req, res) => {
     try {
-      if (req.user.role.name == "super-admin") {
+      if (req.user.role.name == "fa-admin") {
         let user = await authUser.getUser(req, res);
         const transactions = await transactionModel.findByIdAndUpdate(
           req.params["id"],
