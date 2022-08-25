@@ -66,6 +66,7 @@ module.exports = {
           ...req.body,
           hei: hei._id,
           createdBy: user._id,
+          status: "Pending",
         });
         returnMessage.successMessage(res,messages.successMessages.addState,projects);    
     } catch (error) {
@@ -141,6 +142,33 @@ module.exports = {
       }
     } catch (error) {
       returnMessage.errorMessage(res, error);
+    }
+  },
+
+  getProjectsAccToProposal: async(req,res) => {
+    try {
+      const projects = await projectModel.find({ projectProposal: req.params.id });
+      returnMessage(res, messages.successMessages.addCountry, projects);
+    } catch(error) {
+      // error handling
+    }
+  },
+  approveProject: async(req,res) => {
+    try {
+      if(req.user.role.name == 'fa-admin') {
+        const fundingAgency = await fundingAgencyModel.findOne({ "admin": { $eq: user._id }});
+        const project = await projectModel.find({ _id: req.params.projectId });
+        if(fundingAgency._id.equals(project.fundingAgency)) {
+          await project.update({ status: "Approved" });
+          returnMessage(res, messages.successMessages.addCountry, project);
+        } else {
+          // Error Handling
+        }
+      } else {
+        // Error Handling
+      }
+    } catch(error) {
+      console.log(error);
     }
   },
 
