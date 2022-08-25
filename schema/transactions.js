@@ -5,7 +5,8 @@ const transaction = new mongoose.Schema({
   name: String,
   createdAt: Date,
   amount: Number,
-  utr: Number,
+  utr: String,
+  description: String,
   project: {
     type: Schema.Types.ObjectId,
     ref: "project",
