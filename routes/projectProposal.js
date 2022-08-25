@@ -1,6 +1,6 @@
-const projectProposalProposal = require("../../controllers/base_tables/projectProposal");
+const projectProposal = require("../controllers/projectProposal");
 const router = require("express").Router();
-const roleMiddleware = require("../../middleware/roleMiddleware");
+const roleMiddleware = require("../middleware/roleMiddleware");
 
 router.get("/",roleMiddleware, projectProposal.index);
 router.post("/",roleMiddleware, projectProposal.create);
