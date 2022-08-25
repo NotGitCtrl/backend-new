@@ -17,7 +17,7 @@ module.exports = {
   },
   create: async (req, res) => {
     try {
-      if (req.user.role.name == "super-admin") {
+      if ((req.user.role.name == "fa-admin") || (req.user.role.name == "hei-admin") || (req.user.role.name == "project-member")) {
         const phase = await phaseModel.create({ ...req.body });
         returnMessage.successMessage(
           res,
@@ -45,7 +45,7 @@ module.exports = {
   },
   update: async (req, res) => {
     try {
-      if (req.user.role.name == "super-admin") {
+      if (req.user.role.name == "fa-admin") {
         const phase = await phaseModel.findByIdAndUpdate(req.params["id"], {
           ...req.body,
         });
