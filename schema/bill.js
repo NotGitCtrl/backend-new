@@ -17,6 +17,7 @@ const billSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "hei",
   },
+  approvedAmount: String,
   docs: Array,
   items: Array,
   createdBy: {

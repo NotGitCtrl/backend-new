@@ -18,8 +18,6 @@ const importData = async () => {
     const seedProject = [];
 
     const heis = await heiModel.find();
-
-    // const oldUsers = await userModel.find({ role: role._id });
     heis.forEach((h, i) => {
       seedProject.push({
         name: `Lorem ipsum dolor sit amet, consectetur adipiscing elit`,
