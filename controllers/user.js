@@ -7,8 +7,7 @@ const messages = require("../lang/messages.json");
 const {hashPassword, signToken, verifyToken} = require("../utils");
 const authUser = require("../utils/authUser");
 
-module.exports = {
-  redirectUser: async (req,res,user) => {
+async function redirectUser(user) {
     await user.populate({
       path: "role",
       select: ["name"],
@@ -64,7 +63,9 @@ module.exports = {
         email: user.email,
       };
     }
-  },
+  }
+
+  module.exports = {
   register: async (req, res) => {
     try {
       const {password, email} = req.body;
