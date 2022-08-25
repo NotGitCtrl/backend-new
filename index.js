@@ -18,6 +18,7 @@ const heiRoute = require("./routes/hei");
 const heiAdminRoute = require("./routes/hei/admin");
 const phaseRoute = require("./routes/phase");
 const userRoute = require("./routes/user");
+const projectProposalRoute = require("./routes/projectProposal");
 require("dotenv").config();
 
 const dbConnection = require("./utils/DBconnection");
@@ -48,6 +49,7 @@ app.use(`/${routePrefix}/hei/admin`, heiAdminRoute);
 app.use(`/${routePrefix}/fa/admin`, faAdminRoute);
 app.use(`/${routePrefix}/phases`, phaseRoute);
 app.use(`/${routePrefix}/users`, userRoute);
+app.use(`/${routePrefix}/project-proposals`, projectProposalRoute);
 
 app.listen(4000, async () => {
   try {

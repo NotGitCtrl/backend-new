@@ -24,6 +24,10 @@ const project = new mongoose.Schema({
     type: String,
     enum: ["hardware", "software", "hybrid"],
   },
+  projectProposal: {
+    type: Schema.Types.ObjectId,
+    ref: "projectProposal",
+  },
   scheme: {
     type: Schema.Types.ObjectId,
     ref: "scheme",
