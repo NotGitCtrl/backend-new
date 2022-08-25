@@ -13,6 +13,7 @@ module.exports = {
           const user = await userModel.findOne({ email: req.user });
           await user.populate({
             path: "role",
+            select: ['name']
           });
           
           return user 

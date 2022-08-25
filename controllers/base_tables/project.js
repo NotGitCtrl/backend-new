@@ -6,28 +6,48 @@ const heiModel = require("../../schema/hei");
 const schemeModel = require("../../schema/schemes");
 const authUser = require("../../utils/authUser");
 const userDetails = require("../../utils/authUser");
+
+const projectPopulate = [
+  {
+    path: 'scheme',
+    select: ['name'],
+  },
+  {
+    path: 'hei',
+    select: ['name'],
+  },
+  {
+    path: 'fundingAgency',
+    select: ['name'],
+  },
+  {
+    path: 'updatedBy',
+    select: ['name'],
+  },
+]
+
 module.exports = {
   index: async (req, res) => {
     try {
       const user = await userDetails.getUser(req,res);
-      // console.log(req.user.role.name);
-      if(req.user.role.name == 'super-admin') {
-        const projects = await projectModel.find();
+      console.log(user.role.name);
+      if(user.role.name == 'super-admin') {
+        const projects = await projectModel.find().populate(projectPopulate);
         returnMessage.successMessage(res,messages.successMessages.getAllStates,projects);
       }
-      else if(req.user.role.name == 'fa-admin') {
+      else if(user.role.name == 'fa-admin') {
         const fundingAgency = await fundingAgencyModel.findOne({ "admin": { $eq: user._id }});
-        const projects = await projectModel.find({ "fundingAgency": { $eq: fundingAgency._id }});  
+        const projects = await projectModel.find({ "fundingAgency": { $eq: fundingAgency._id }}).populate(projectPopulate);  
         returnMessage.successMessage(res,messages.successMessages.getAllStates,projects);
       }
-      else if(req.user.role.name == 'hei-admin') {
-        const hei = await heiModel.find({ "heiAdmin": { $eq: user._id }});
-        const projects = await projectModel.find({ "hei": { $eq: hei._id }});
+      else if(user.role.name == 'hei-admin') {
+        const hei = await heiModel.findOne({ "heiAdmin": { $eq: user._id }});
+        const projects = await projectModel.find({ "hei": { $eq: hei._id }}).populate(projectPopulate);
         returnMessage.successMessage(res,messages.successMessages.getAllStates,projects);
-      }else if (req.user.role.name == 'fa-project-coordinator') {
+      }else if (user.role.name == 'fa-project-coordinator') {
         const projects = await projectModel.find({ "fundingAgencyCoordinator": { $eq: user._id }});
         returnMessage.successMessage(res,messages.successMessages.getAllStates,projects);
-      }else if(req.user.role.name == 'hei-project-coordinator') {
+      }else if(user.role.name == 'hei-project-coordinator') {
         const projects = await projectModel.find({ "heiCoordinator": { $eq: user._id }});
         returnMessage.successMessage(res,messages.successMessages.getAllStates,projects);
       }
@@ -41,7 +61,7 @@ module.exports = {
   create: async (req, res) => {
     try {
       let user = await authUser.getUser(req, res);
-      if(req.user.role.name == 'fa-admin'){
+      if(user.role.name == 'fa-admin'){
         const fa = await fundingAgencyModel.findOne({ admin: user._id })
         const projects = await projectModel.create({
           ...req.body,
@@ -105,22 +125,32 @@ module.exports = {
   // },
   show: async (req, res) => {
     try {
+      const user = await userDetails.getUser(req,res);
       const project = await projectModel.findOne({ _id: req.params["id"] });
-      if(req.user.role.name == 'fa-admin') {
+      console.log(user.role.name)
+      if(user.role.name == 'fa-admin') {
+        // console.log("here")
         const fundingAgency = await fundingAgencyModel.findOne({ "admin": { $eq: user._id }});
+        // console.log(fundingAgency)
         if(fundingAgency._id.equals(project.fundingAgency)){
           returnMessage.successMessage(res,messages.successMessages.showState,project);
         }
-      } else if(req.user.role.name == 'hei-admin') {
-        const hei = await heiModel.find({ "heiAdmin": { $eq: user._id }});
-        if(hei._id == project.hei) {
+      } else if(user.role.name == 'hei-admin') {
+        // const hei = await heiModel.findOne({ "heiAdmin": { $eq: user._id }});
+        // console.log(hei)
+        // if(hei._id.equals(project.hei)) {
           returnMessage.successMessage(res,messages.successMessages.showState,project);
-        }
-      } else if(req.user.role.name == 'fa-project-coordinator') {
+        
+      } else if(user.role.name == 'fa-project-coordinator') {
         if(project.fundingAgencyCoordinator.includes(user._id)) {
           returnMessage.successMessage(res,messages.successMessages.showState,project);
         }
-      } else  {
+      } else if((user.role.name == 'super-admin') || (user.role.name == 'ugc-admin')) {
+        
+          returnMessage.successMessage(res,messages.successMessages.showState,project);
+        }
+      
+        else  {
         // Add Later
       }
     } catch (error) {
