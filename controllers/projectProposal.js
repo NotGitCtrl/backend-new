@@ -1,11 +1,11 @@
-const returnMessage = require("../message");
-const messages = require("../../lang/messages.json");
-const projectProposalModel = require("../../schema/projectProposal");
-const fundingAgencyModel = require("../../schema/fundingAgency");
-const heiModel = require("../../schema/hei");
-const schemeModel = require("../../schema/schemes");
-const authUser = require("../../utils/authUser");
-const userDetails = require("../../utils/authUser");
+const returnMessage = require("./message");
+const messages = require("../lang/messages.json");
+const projectProposalModel = require("../schema/projectProposal");
+const fundingAgencyModel = require("../schema/fundingAgency");
+const heiModel = require("../schema/hei");
+const schemeModel = require("../schema/schemes");
+const authUser = require("../utils/authUser");
+const userDetails = require("../utils/authUser");
 
 const projectPopulate = [
   {
