@@ -7,6 +7,7 @@ const transaction = new mongoose.Schema({
   amount: Number,
   utr: String,
   description: String,
+  payment_gateway_status: String,
   project: {
     type: Schema.Types.ObjectId,
     ref: "project",

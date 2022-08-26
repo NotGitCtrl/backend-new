@@ -31,6 +31,7 @@ module.exports = {
         const transactions = await transactionModel.create({
           ...req.body,
           createdBy: user._id,
+          paymentGatewayStatus: "",
         });
 
         returnMessage.successMessage(
@@ -41,6 +42,38 @@ module.exports = {
       }
     } catch (error) {
       returnMessage.errorMessage(res, error);
+    }
+  },
+  paymentSuccess: async(req,res) => {
+    try {
+      const transaction = await transactionModel.findByIdAndUpdate(
+        req.params["id"],
+        { ...req.body, updatedBy: user._id, status: "Paid" },
+        { new: true }
+      );
+      returnMessage.successMessage(
+        res,
+        messages.successMessages.showState,
+        transaction
+      );
+    } catch(error) {
+      returnMessage.errorMessage(res,error);
+    }
+  },
+  paymentFailure: async(req,res) => {
+    try {
+      const transaction = await transactionModel.findByIdAndUpdate(
+        req.params["id"],
+        { ...req.body, updatedBy: user._id, status: "Payment Failure" },
+        { new: true }
+      );
+      returnMessage.successMessage(
+        res,
+        messages.successMessages.showState,
+        transaction
+      );
+    } catch(error) {
+      returnMessage.errorMessage(res,error);
     }
   },
   edit: async (req, res) => {
